@@ -28,9 +28,21 @@ X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.30,
 y_pred = lr.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 
-st.metric("Model Accuracy", "{:.2f}".format(accuracy), border=True)
+col1, col2 = st.columns(2)
 
-fig, ax = plt.subplots()
-ax = sns.countplot(x ='diagnosis', data = df)
-ax.set(xlabel="Diagnosis", ylabel="Count")
-st.pyplot(fig)
+with col1:
+    st.metric("Model Accuracy", "{:.2f}".format(accuracy), border=True)
+    fig, ax = plt.subplots()
+    ax = sns.countplot(x ='diagnosis', data = df)
+    ax.set(xlabel="Diagnosis - Benign (0) & Malignant (1)", ylabel="Count")
+    st.pyplot(fig) 
+
+with col2:
+    cols = ['diagnosis',
+            'radius_mean', 
+            'texture_mean',
+            'concavity_mean',
+            'symmetry_mean']
+
+    fig = sns.pairplot(data=df[cols], hue="diagnosis")
+    st.pyplot(fig) 
